@@ -1,5 +1,22 @@
 Link ke PWS = https://rehema-zurafa-allfootballstop.pbp.cs.ui.ac.id/
 
+Tugas 3:
+Django AuthenticationForm adalah built-in form dari django yang dibuat untuk keperluan login. Kelebihannya adalah AuthenticationForm memudahkan implementasi login karena disediakan form dengan field username dan password. Kekurangannya adalah Django AuthenticationForm cukup minimal dalam opsi login yang disediakan.
+
+Autentikasi adalah proses untuk memverifikasi identitas seseorang sesuai dengan yang dinginkan, sementara Otorisasi adalah proses untuk menentukan apa saja hal yang bisa dilakukan dalam sistem oleh orang tertentu. Django mengimplementasikan autentikasi dan otorisasi melalui modul django.contrib.auth yang memberikan banyak hal yang dapat digunakan untuk mengautentikasi dan mengatur permission.
+
+Kelebihan dari session dan cookies adalah lebih aman dalam penyimpanan state (karena state disimpan di server), memudahkan user dalam penggunaan app (tidak perlu autentikasi terus menerus), dan data antara user tidak akan bertabrakan (session terisolasi antara user). Kekurangan dari session dan cookies adalah user perlu mengaktifasi fitur cookies dalam browsernya agar bisa menyimpan cookies
+
+Cookies memiliki risiko bahwa user bisa saja dicuri dan digunakan untuk merequest hal tanpa sepengetahuan user. Untuk mengatasi ini Django memiliki sistem protection yaitu sistem CSRF Protection untuk memverifikasi bahwa request dari user yang benar.
+
+Cara saya implementasi checklist:
+1. Membuat fungsi registrasi dan template untuk registrasi (register.html)
+2. Membuat fungsi login & logout dan template untuk login (login.html)
+3. Merestriksi fungsi show_main (Main page app) & show_product (Product Details) sehingga harus login terlebih dahulu
+4. Mengimplementasi cookies untuk menentukan kapan user terakhir login.
+5. Menghubungkan model Product dengan User (django built-in model) sehingga product bisa memiliki seller sesuai dan user bisa menjual produk juga.
+
+----------------------------------------------------------------------------------------------------------------------------------
 Tugas 2:
 
 Data Delivery penting karena jika ada keperluan untuk merubah platform, data yang tersimpan sebelumnya bisa digunakan kembali.
