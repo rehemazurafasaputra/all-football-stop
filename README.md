@@ -1,6 +1,26 @@
 Link ke PWS = https://rehema-zurafa-allfootballstop.pbp.cs.ui.ac.id/
+<details>
+<summary>Tugas 4</summary>
+Urutan prioritas dari pengambilan CSS selector dari inline styles (style yang langsung di elemen htmlnya), lalu ID Selector, lalu class selector, dan terakhir element selector
 
-Tugas 3:
+Responsive design menjadi konsep yang penting karena sehingga design web menjadi sesuai dengan device yang dipakai user. Contoh dari web yang sudah menerapkan responsive design adalah youtube.com yang menyesuaikan design antara desktop dan mobile.
+
+Border adalah batasan yang mengililingi content (dan padding jika ada). Cara menerapkan border adalah dengan menggunakan kata kunci border dalam styling css dan terdapat berberapa property border seperti border-with, border-style, border-color, dll. Padding merupakan besaran spacing antara content dengan border. Cara menerapkan padding adalah dengan kata kunci padding dan memiliki beberapa property seperti padding-top, padding-bottom, padding-right, padding-left. Margin adalah besaran spacing antara element satu sama lain. Cara menerapkan margin adalah dengan kata kunci margin dan memiliki beberapa property seperti margin-top, margin-right, margin-bottom, margin-left.
+
+Grid and Flexbox adalah konsep untuk mengatur layout di CSS. Perbedaan dari Grid dan Flexbox adalah kegunaan utamanya, Grid berguna untuk mengatur layout web secara keseluruhan, sementara flexbox berguna untuk mengatur tata dari content-content di web. 
+
+Langkah mengimplementasikan checklist:
+1. Membuat fungsi untuk delete dan edit produk di views.py dan templatenya.
+2. Melink fungsi diatas di urls.py main
+3. Menambah navigation bar template di template root.
+4. Menambahkan tailwind dan menkonfigurasikan tailwind dan css
+5. Menambahkan custom styling di global.css
+6. Melakukan styling di template-template yang berada di aplikasi main.
+7. Menambahkan README.md
+</details>
+----------------------------------------------------------------------------------------------------------------------------------
+<details>
+<summary>Tugas 3</summary>
 Django AuthenticationForm adalah built-in form dari django yang dibuat untuk keperluan login. Kelebihannya adalah AuthenticationForm memudahkan implementasi login karena disediakan form dengan field username dan password. Kekurangannya adalah Django AuthenticationForm cukup minimal dalam opsi login yang disediakan.
 
 Autentikasi adalah proses untuk memverifikasi identitas seseorang sesuai dengan yang dinginkan, sementara Otorisasi adalah proses untuk menentukan apa saja hal yang bisa dilakukan dalam sistem oleh orang tertentu. Django mengimplementasikan autentikasi dan otorisasi melalui modul django.contrib.auth yang memberikan banyak hal yang dapat digunakan untuk mengautentikasi dan mengatur permission.
@@ -15,9 +35,10 @@ Cara saya implementasi checklist:
 3. Merestriksi fungsi show_main (Main page app) & show_product (Product Details) sehingga harus login terlebih dahulu
 4. Mengimplementasi cookies untuk menentukan kapan user terakhir login.
 5. Menghubungkan model Product dengan User (django built-in model) sehingga product bisa memiliki seller sesuai dan user bisa menjual produk juga.
-
+</details>
 ----------------------------------------------------------------------------------------------------------------------------------
-Tugas 2:
+<details>
+<summary>Tugas 2</summary>
 
 Data Delivery penting karena jika ada keperluan untuk merubah platform, data yang tersimpan sebelumnya bisa digunakan kembali.
 
@@ -39,8 +60,10 @@ Cara saya implementasi checklist:
 9. Menambah README.md
 
 link folder foto screenshot postman: https://drive.google.com/drive/folders/1IVrW576fyTT00hWzBjCAtTKeyZuuHjeN?usp=drive_link
+</details>
 ----------------------------------------------------------------------------------------------------------------------------
-Tugas 1:
+<details>
+<summary>Tugas 1:</summary>
 
 Cara saya implementasi checklist:
 
@@ -74,5 +97,4 @@ Melakukan migration untuk perubahan model dapat dilakukan dengan:
 Django dijadikan permulaan pembelajaran pengembangan proyek lunak mungkin karena menggunakaan bahasa yang cukup mudah (Python) serta banyak hal yang diperlukan untuk web app langsung disediakan oleh Django.
 
 Menurut saya tutorial 1 sudah cukup mudah untuk diikuti jalan prosesnya.
-
-
+</details>

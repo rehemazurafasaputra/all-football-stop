@@ -1,0 +1,62 @@
+{% load static %}
+<article class="bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+  <!-- Thumbnail -->
+  <div class="aspect-square relative overflow-hidden">
+    <a href="{% url 'main:show_product' product.pk %}">
+        <img src="{{ product.thumbnail }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+    </a>
+
+    {% if product.is_featured %}
+    <div class="absolute top-3 left-3">
+      <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-orange-600 text-white">
+        Featured
+      </span>
+    </div>
+    {% endif %}
+
+  </div>
+
+  <!-- Content -->
+  <div class="p-3">
+    <div class="flex items-center text-sm text-gray-500 mb-2">
+        <span>{{product.category}}</span>
+    </div>
+
+    <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 leading-tight">
+      <a href="{% url 'main:show_product' product.pk %}" class="hover:text-orange-600 transition-colors">
+        {{ product.name }}
+      </a>
+    </h3>
+
+    <p class="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-3">
+      Rp {{ product.price }}
+    </p>
+
+    <p class="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-3">
+      Stock Left: {{ product.stock }}
+    </p>
+
+    <!-- Action Buttons -->
+    {% if user.is_authenticated and product.user == user %}
+      <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+        <a href="{% url 'main:show_product' product.pk %}" class="text-orange-600 hover:text-orange-700 font-medium text-sm transition-colors">
+          Product Description
+        </a>
+        <div class="flex space-x-2">
+          <a href="{% url 'main:edit_product' product.pk %}" class="text-gray-600 hover:text-gray-700 text-sm transition-colors">
+            Edit
+          </a>
+          <a href="{% url 'main:delete_product' product.pk %}" class="text-red-600 hover:text-red-700 text-sm transition-colors">
+            Delete
+          </a>
+        </div>
+      </div>
+    {% else %}
+      <div class="pt-2 border-t border-gray-100">
+        <a href="{% url 'main:show_product' product.pk %}" class="text-orange-600 hover:text-orange-700 font-medium text-sm transition-colors">
+          Read more →
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</article>
