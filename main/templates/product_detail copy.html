@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>{{ product.name }} - ALL FOOTBALL STOP</title>
+{% endblock meta %}
+
+{% block content %}
+<div class="bg-gray-50 w-full min-h-screen">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-6">
+            <a href="{% url 'main:show_main' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+                ← Back to Main Menu
+            </a>
+            <h1 class="py-3 sm:text-4xl py-3 font-bold text-black-900 leading-tight mb-4">
+                    {{ product.name }}    
+            </h1>
+
+            <!-- Featured Image -->
+            <div class="px-6 sm:px-8">
+                <img src="{{ product.thumbnail }}" 
+                    alt="{{ product.title }}" 
+                    class="w-full h-full object-cover rounded-lg">
+            </div>
+
+            <div class="p-6 sm:p-8">
+                <div class="prose prose-lg max-w-none">
+                    <div class="text-black-700 leading-relaxed whitespace-pre-line text-base sm:text-lg">
+                        Rp {{ product.price }}
+                        Category: {{product.category}}
+                    </div>
+                    <div class="text-gray-700 leading-relaxed whitespace-pre-line text-base sm:text-lg">
+                        {{ product.description }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seller Info -->
+            <div class="border-t border-gray-200 p-6 sm:p-8 bg-gray-50">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <div class="font-medium text-gray-900">
+                            {% if product.user %}
+                                <p>{{ product.user.username }}</p>
+                            {% else %}
+                                <p>Anonymous</p>
+                            {% endif %}
+                        </div>
+                        <p class="text-sm text-gray-500">Seller</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
