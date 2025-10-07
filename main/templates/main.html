@@ -16,8 +16,13 @@
     </div>
 
     <!-- Button to open modal -->
-    <button onclick="showModal()" class="inline-flex items-center px-4 py-2 bg-white text-orange-600 font-semibold outline outline-2 outline-orange-600 outline-offset-[-2px] rounded-md hover:bg-orange-600 hover:text-white transition-colors mb-4">
+    <button onclick="addProductModal()" class="inline-flex items-center px-4 py-2 bg-white text-orange-600 font-semibold outline outline-2 outline-orange-600 outline-offset-[-2px] rounded-md hover:bg-orange-600 hover:text-white transition-colors mb-4">
       Add Product by AJAX
+    </button>
+
+    <!-- Button to refresh product (without refreshing browser) -->
+    <button onclick="refreshProducts()" class="inline-flex items-center px-4 py-2 bg-white text-orange-600 font-semibold outline outline-2 outline-orange-600 outline-offset-[-2px] rounded-md hover:bg-orange-600 hover:text-white transition-colors mb-4">
+      Refresh Product by AJAX
     </button>
 
     <!-- Filter Section -->
@@ -63,7 +68,9 @@
     </div>
   </div>
 </div>
+{% endblock content %}
 
+{% block scripts %}
 <script>
 // Configuration
 const PRODUCTS_API_ENDPOINT = "{% url 'main:show_json' %}";
@@ -122,13 +129,13 @@ function buildProductCardElement(productItem) {
   const articleElement = document.createElement('article');
   articleElement.className = 'bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-300 overflow-hidden flex flex-col h-full';
 
-  const detailLink = `{% url 'main:show_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productItem.pk);
-  const editLink = `{% url 'main:edit_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productItem.pk);
-  const deleteLink = `{% url 'main:delete_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productItem.pk);
+  const detailLink = `{% url 'main:show_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productItem.id);
+  const editLink = `{% url 'main:edit_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productItem.id);
+  const deleteLink = `{% url 'main:delete_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productItem.id);
 
   const name = DOMPurify.sanitize(productItem.name);
   const description = DOMPurify.sanitize(productItem.description);
-  const price = DOMPurify.sanitize(productItem.price);
+  const price = new Intl.NumberFormat('id-ID').format(DOMPurify.sanitize(productItem.price));
   const stock = DOMPurify.sanitize(productItem.stock);
   const category = DOMPurify.sanitize(productItem.category);
   const thumbnail = DOMPurify.sanitize(productItem.thumbnail);
@@ -137,17 +144,17 @@ function buildProductCardElement(productItem) {
   const isFeatured = productItem.is_featured;
 
   const thumbnailHtml = productItem.thumbnail 
-    ? `<img src='${thumbnail}' alt='${name}' class='w-full h-full object-cover'>` 
+    ? `<a href="${detailLink}"><img src='${thumbnail}' alt='${name}' class='w-full h-full object-cover'></a>` 
     : `<div class='w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center'></div>`;
 
   const featuredBadge = isFeatured 
-    ? `<span class='inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800'>Featured</span>` 
+    ? `<span class='inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-orange-600 text-white'>Featured</span>` 
     : '';
 
-  const editDeleteHtml = CURRENT_USER_ID && Number(CURRENT_USER_ID) === Number(item.user_id)
+  const editDeleteHtml = CURRENT_USER_ID && Number(CURRENT_USER_ID) === Number(productItem.user_id)
         ? `<div class='flex space-x-2'>
-            <a href='${editLink}' class='text-gray-600 hover:text-gray-700 text-sm transition-colors'>Edit</a>
-            <a href='${deleteLink}' class='text-red-600 hover:text-red-700 text-sm transition-colors' onclick='return confirm("Are you sure you want to delete this article?")'>Delete</a>
+            <button type='button' onclick='updateProductModal("${productItem.id}")' class='text-gray-600 hover:text-gray-700 text-sm transition-colors'>Edit (by AJAX)</button>
+            <button type='button' onclick='deleteProduct("${productItem.id}")' class='text-red-600 hover:text-red-700 text-sm transition-colors'>Delete (by AJAX)</button>
           </div>`
         : '';
 
@@ -155,7 +162,7 @@ function buildProductCardElement(productItem) {
     <div class="aspect-square relative overflow-hidden">
       ${thumbnailHtml}
       <div class="absolute top-3 left-3">
-        <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-orange-600 text-white">${featuredBadge}</span>
+        <span>${featuredBadge}</span>
       </div>
     </div>
     <div class="p-3 flex flex-col flex-1">
@@ -205,6 +212,8 @@ function filterAndDisplayProducts() {
 
 // Fetch Product data from server
 async function fetchProductsFromServer() {
+  let scrollPositionY = window.scrollY; //  menyimpan scroll position biar nanti gak kelempar ke atas
+  let scrollPostionX = window.scrollX;
   try {
     displayPageSection({ showLoading: true });
     
@@ -220,6 +229,7 @@ async function fetchProductsFromServer() {
     allProductData = productData || [];
     
     filterAndDisplayProducts();
+    window.scrollTo(scrollPostionX, scrollPositionY); // balik ke scroll saat menlakukan aksi
   } catch (error) {
     console.error('Error loading product:', error);
     displayPageSection({ showError: true });
@@ -245,6 +255,38 @@ function initializeProductPage() {
   fetchProductsFromServer();
 }
 
+function refreshProducts() {
+  fetchProductsFromServer();
+  showToast('Yipeee!', 'Product refreshed successfully', 'success');
+}
+
+async function deleteProduct(productId) {
+    if (!confirm("Are you sure you want to delete this product?")) {
+        return; // return kalau gak mau delete
+    }
+
+    try {
+        const url = `{% url 'main:delete_product_ajax' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productId);
+        
+        const response = await fetch(url, {
+            method: "POST",
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.status === 'success') {
+            showToast('Yipeee!', data.message, 'success');
+            fetchProductsFromServer();
+        } else {
+            throw new Error(data.message || 'Failed to delete product.');
+        }
+
+    } catch (error) {
+        console.error("Error deleting product:", error);
+        showToast('Error', error.toString(), 'error');
+    }
+}
+
 // Add event listener to detect new product
 document.addEventListener('productAdded', function() {
     // Refresh data without page reload
@@ -254,5 +296,4 @@ document.addEventListener('productAdded', function() {
 // Start application
 initializeProductPage();
 </script>
-
-{% endblock content %}
+{% endblock scripts %}

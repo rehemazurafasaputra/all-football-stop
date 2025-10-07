@@ -81,6 +81,7 @@
 </div>
 {% endblock content %}
 
+{% block scripts %}
 <script>
 // Configuration
 const PRODUCT_ID = "{{ product.id }}";
@@ -117,7 +118,7 @@ function getReadableCategoryName(categoryCode) {
 // Render article content
 function renderArticle(product) {
     // Set title
-    articleTitle.textContent = product.name;
+    articleName.textContent = product.name;
     document.title = `${product.name} - ALL FOOTBALL STOP`;
 
     // Set featured image
@@ -131,15 +132,15 @@ function renderArticle(product) {
     
     // Set Category & Price
     const categoryName = getReadableCategoryName(product.category);
-    const price = product.price
-    articleCategoryText.textContent = `Category: ${categoryName}\nPrice: ${price}`
+    const price = new Intl.NumberFormat('id-ID').format(product.price);
+    articleCategoryText.innerHTML = `Category: ${categoryName}<br>Price: Rp ${price}<br>`;
 
     // Set content
     articleDescriptionText.textContent = product.description;
     
     // Set seller
     const sellerName = product.user_username || 'Anonymous';
-    articleSeller.textContent = `Seller: ${sellerName}`;
+    articleSeller.textContent = `${sellerName}`;
 }
 
 // Fetch news detail
@@ -167,3 +168,4 @@ async function loadProductDetail() {
 // Initialize page
 loadProductDetail();
 </script>
+{% endblock scripts %}

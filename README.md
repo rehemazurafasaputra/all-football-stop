@@ -1,6 +1,22 @@
 Link ke PWS = https://rehema-zurafa-allfootballstop.pbp.cs.ui.ac.id/
 <details>
-<summary>Tugas 4</summary>
+<summary>Tugas 6</summary>
+Perbedaan dari synchronus request dan asynchronus request adalah untuk synchronus request, setelah client memberikan request, client harus menunggu response dari server sebelum melakukan hal lainnya. Sementara untuk asynchronus request, client dapat melakukan hal lain tanpa perlu menunggu response dari server.
+
+AJAX bekerja dalam django melalui tahapan berikut:
+1. Terjadi event dari client.
+2. JavaScript melakukan request HTTP ke suatu URL di Django server.
+3. Melalui url tersebut, dipilih view yang sesuai dan menjalan fungsinya. Hasil biasanya dalam bentuk JsonResponse
+4. Response yang diberikan diproses kode JavaScript dan memberikan hasil yang sesuai ke client
+
+Cara memastikan keamanan untuk fitur login dan register adalah dengan melakukan perlindungan dari Cross Site Request Forgery (CSRF) dan menggunakan CSRF Token. CSRF Token dapat didapatkan melalui kode JavaScript yang akan dikirim melalui headar untuk permintaan POST, PUT, atau DELETE.
+
+AJAX dapat meningkatkan pengalaman user seperti tidak perlunya untuk melakukan refresh untuk menampilkan hal baru, app bisa menampilkan message tanpa melakukan reload, dan app juga dapat dibuat lebih interaktif untuk user.
+
+</details>
+---------------------------------------------------------------------------------------
+<details>
+<summary>Tugas 5</summary>
 Urutan prioritas dari pengambilan CSS selector dari inline styles (style yang langsung di elemen htmlnya), lalu ID Selector, lalu class selector, dan terakhir element selector
 
 Responsive design menjadi konsep yang penting karena sehingga design web menjadi sesuai dengan device yang dipakai user. Contoh dari web yang sudah menerapkan responsive design adalah youtube.com yang menyesuaikan design antara desktop dan mobile.
@@ -20,7 +36,7 @@ Langkah mengimplementasikan checklist:
 </details>
 ----------------------------------------------------------------------------------------------------------------------------------
 <details>
-<summary>Tugas 3</summary>
+<summary>Tugas 4</summary>
 Django AuthenticationForm adalah built-in form dari django yang dibuat untuk keperluan login. Kelebihannya adalah AuthenticationForm memudahkan implementasi login karena disediakan form dengan field username dan password. Kekurangannya adalah Django AuthenticationForm cukup minimal dalam opsi login yang disediakan.
 
 Autentikasi adalah proses untuk memverifikasi identitas seseorang sesuai dengan yang dinginkan, sementara Otorisasi adalah proses untuk menentukan apa saja hal yang bisa dilakukan dalam sistem oleh orang tertentu. Django mengimplementasikan autentikasi dan otorisasi melalui modul django.contrib.auth yang memberikan banyak hal yang dapat digunakan untuk mengautentikasi dan mengatur permission.
@@ -38,7 +54,7 @@ Cara saya implementasi checklist:
 </details>
 ----------------------------------------------------------------------------------------------------------------------------------
 <details>
-<summary>Tugas 2</summary>
+<summary>Tugas 3</summary>
 
 Data Delivery penting karena jika ada keperluan untuk merubah platform, data yang tersimpan sebelumnya bisa digunakan kembali.
 
@@ -63,7 +79,7 @@ link folder foto screenshot postman: https://drive.google.com/drive/folders/1IVr
 </details>
 ----------------------------------------------------------------------------------------------------------------------------
 <details>
-<summary>Tugas 1:</summary>
+<summary>Tugas 2</summary>
 
 Cara saya implementasi checklist:
 

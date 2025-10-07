@@ -39,7 +39,7 @@
         </div>
       {% endif %}
 
-      <form method="POST" action="" class="space-y-5">
+      <form id="register-form" method="POST" action="" class="space-y-5">
         {% csrf_token %}
         
         <div>
@@ -116,3 +116,54 @@
   </div>
 </div>
 {% endblock content %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const registerForm = document.getElementById("register-form");
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    registerForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(registerForm);
+        const data = Object.fromEntries(formData.entries());
+
+        // Client-side check: ensure passwords match before sending
+        if (data.password1 !== data.password2) {
+            showToast("Error", "Passwords do not match.", "error");
+            return; // Stop the function here
+        }
+
+        try {
+            const response = await fetch("{% url 'main:register_ajax' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken,
+                },
+                body: JSON.stringify({
+                    username: data.username,
+                    password1: data.password1,
+                    password2: data.password2
+                }),
+            });
+
+            const result = await response.json();
+
+            if (result.status === "success") {
+                showToast("Success!", result.message, "success");
+                setTimeout(() => {
+                    window.location.href = result.redirect_url;
+                }, 2000); // Redirect after 2 seconds
+            } else {
+                showToast("Registration Failed", result.message, "error");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            showToast("Error", "An unexpected error occurred. Please try again.", "error");
+        }
+    });
+});
+</script>
+{% endblock scripts %}

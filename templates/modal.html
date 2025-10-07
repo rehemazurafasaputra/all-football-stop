@@ -4,7 +4,7 @@
     <!-- Modal header -->
     <div class="flex items-center justify-between p-4 border-b">
       <div>
-        <h3 class="text-xl font-semibold text-gray-900">
+        <h3 id="modalTitle" class="text-xl font-semibold text-gray-900">
           Add New Product
         </h3>
         <!-- <p class="text-sm text-gray-600 mt-1">Share your football news and stories with the community</p> -->
@@ -19,9 +19,18 @@
     <!-- Modal body -->
     <div class="px-6 py-4 space-y-6 form-style">
       <form id="productForm">
+        <input type="hidden" id="product_id" name="product_id">
         <div class="mb-4">
           <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
           <input type="text" id="name" name="name" class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2" placeholder="Enter Product Name" required>
+        </div>
+        <div class="mb-4">
+          <label for="stock" class="block text-sm font-medium text-gray-700">Stock</label>
+          <input type="number" id="stock" name="stock" class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2" placeholder="Enter Product Stock" required>
+        </div>
+        <div class="mb-4">
+          <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
+          <input type="number" id="price" name="price" class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2" placeholder="Enter Product Price" required>
         </div>
         <div class="mb-4">
           <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
@@ -51,55 +60,96 @@
     <!-- Modal footer -->
     <div class="flex flex-col sm:flex-row gap-4 p-6 border-t border-gray-200 rounded-b">
       <button type="button" id="cancelButton" class="order-2 sm:order-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-md font-medium hover:bg-gray-50 transition-colors text-center" onclick="hideModal()">Cancel</button>
-      <button type="submit" id="submitProduct" form="productForm" class="order-1 sm:order-2 flex-1 bg-orange-600 text-white px-6 py-3 rounded-md font-medium hover:bg-orange-700 transition-colors">Add Product</button>
+      <button type="submit" id="submitButton" form="productForm" class="order-1 sm:order-2 flex-1 bg-orange-600 text-white px-6 py-3 rounded-md font-medium hover:bg-orange-700 transition-colors">Add Product</button>
     </div>
   </div>
 </div>
 
 <script>
   function showModal() {
-      const modal = document.getElementById('crudModal');
-      const modalContent = document.getElementById('crudModalContent');
-
-      modal.classList.remove('hidden'); 
-      setTimeout(() => {
-        modalContent.classList.remove('opacity-0', 'scale-95');
-        modalContent.classList.add('opacity-100', 'scale-100');
-      }, 50); 
-  }
-
+    document.getElementById('crudModal').classList.remove('hidden');
+}
   function hideModal() {
-      const modal = document.getElementById('crudModal');
-      const modalContent = document.getElementById('crudModalContent');
-
-      modalContent.classList.remove('opacity-100', 'scale-100');
-      modalContent.classList.add('opacity-0', 'scale-95');
-
-      setTimeout(() => {
-        modal.classList.add('hidden');
-      }, 150); 
-  }
-
-   async function addProductEntry() {
-    await fetch("{% url 'main:add_product_entry_ajax' %}", {
-      method: "POST",
-      body: new FormData(document.querySelector('#productForm')),
-    })
-
+    document.getElementById('crudModal').classList.add('hidden');
+}
+  function addProductModal() {
     document.getElementById("productForm").reset();
-    hideModal();
-      
-    // Show toast notification
-    showToast('Product added successfully!', '', 'success');
+    document.getElementById("product_id").value = "";
+    document.getElementById("modalTitle").innerText = "Add New Product";
+    document.getElementById("submitButton").innerText = "Add Product";
+    showModal();
+}
+  // Function to set up the modal for UPDATING an existing product
+async function updateProductModal(productId) {
+    try {
+        const response = await fetch(`/json/${productId}/`);
+        if (!response.ok) throw new Error('Failed to fetch product details.');
+        const product = await response.json();
 
-    // Dispatch custom event to notify main.html about new data
-    document.dispatchEvent(new CustomEvent('productAdded'));
+        document.getElementById("modalTitle").innerText = "Edit Product";
+        document.getElementById("submitButton").innerText = "Save Changes";
+        
+        document.getElementById('product_id').value = product.id;
+        document.getElementById('name').value = product.name;
+        document.getElementById('stock').value = product.stock;
+        document.getElementById('price').value = product.price;
+        document.getElementById('description').value = product.description;
+        document.getElementById('category').value = product.category;
+        document.getElementById('thumbnail').value = product.thumbnail;
+        document.getElementById('is_featured').checked = product.is_featured;
 
-    return false;
-  }
+        showModal();
+    } catch (error) {
+        console.error("Error opening update modal:", error);
+        if (typeof showToast === 'function') {
+            showToast('Error', 'Could not load product data.', 'error');
+        }
+    }
+}
 
-  document.getElementById("productForm").addEventListener("submit", function(e) {
+// --- Unified Form Submission Handler ---
+document.getElementById("productForm").addEventListener("submit", async function(e) {
     e.preventDefault();
-    addProductEntry();
-})
+    const formData = new FormData(this);
+    const productId = formData.get("product_id");
+
+    let url = "";
+    let successMessage = "";
+
+    if (productId) {
+        // url = `/update-product-ajax/${productId}/`;
+        url = "{% url 'main:edit_product_ajax' '00000000-0000-0000-0000-000000000000' %}".replace('00000000-0000-0000-0000-000000000000', productId);
+        successMessage = "Product updated successfully!";
+    } else {
+        url = "{% url 'main:add_product_entry_ajax' %}";
+        successMessage = "Product added successfully!";
+    }
+    
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            body: formData,
+        });
+
+        // The add endpoint returns 201 Created, update returns JSON
+        let data = {};
+        if (productId) {
+            data = await response.json();
+        }
+
+        if (response.ok) {
+            hideModal();
+            fetchProductsFromServer();
+            showToast('Yipeee!', successMessage, 'success');
+        } else {
+            throw new Error(data.message || 'An unknown error occurred.');
+        }
+
+    } catch (error) {
+        console.error("Error submitting form:", error);
+        if (typeof showToast === 'function') {
+            showToast('Error', error.toString(), 'error');
+        }
+    }
+});
 </script>
