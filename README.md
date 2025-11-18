@@ -1,5 +1,5 @@
 Link ke PWS = https://rehema-zurafa-allfootballstop.pbp.cs.ui.ac.id/
-details>
+<details>
 <summary>Tugas 9</summary>
 Membuat model Dart untuk interaksi JSON dibandingkan langsung menggunakan Map membuat input lebih aman pertama dengan menggunakan model membuat tipe dari input JSON teratur (Type Safe). Selain itu, adanya model bisa memastikan bahwa input dihandle secara aman dan tidak memiliki point ke null (Null Safety). Penggunaan model juga memudahkan developer dalam mengubah atau memaintain hal-hal yang terkait dengan interaksi JSON.
 
