@@ -1,4 +1,37 @@
 Link ke PWS = https://rehema-zurafa-allfootballstop.pbp.cs.ui.ac.id/
+details>
+<summary>Tugas 9</summary>
+Membuat model Dart untuk interaksi JSON dibandingkan langsung menggunakan Map membuat input lebih aman pertama dengan menggunakan model membuat tipe dari input JSON teratur (Type Safe). Selain itu, adanya model bisa memastikan bahwa input dihandle secara aman dan tidak memiliki point ke null (Null Safety). Penggunaan model juga memudahkan developer dalam mengubah atau memaintain hal-hal yang terkait dengan interaksi JSON.
+
+HTTP berperan sebagai alat komunikasi untuk mengirim dan menerima data dari Internet (alamat server). Sementara CookieRequest diperlukan untuk melakukan session handling (status login).
+
+Alasan CookieRequest harus disimpan diberikan semua komponen di aplikasi Flutter adalah untuk menjaga session yang digunakan oleh semua komponen di flutter sama dan tidak ada yang membuat koneksi baru sendiri.
+
+Agar aplikasi flutter dapat berinteraksi dengan server Django pertama adalah dengan mengonfiguarasikan ALLOWED_HOSTS. Penambahan 10.0.2.2 ke ALLOWED_HOSTS dilakukan sehingga jika ada permintaan dari host 10.0.2.2 (emulator Android Flutter), server Django membolehkan host tersebut untuk melakukan permintaannya. Selanjutnya diperlukan pengonfigurasian CORS.  Tujuannya adalah agar permintaan dari Flutter diberikan oleh server Django. Kemudian diperlukan pengaturan SameSite dan Cookie. Ini diperlukan agar atribut Cookie dan sessionid Django diberikan ke Flutter sehingga hal-hal yang memerlukan Cookie (seperti form) dapat berjalan. Terakhir mengonfigurasi android sehingga memperbolehkan untuk mengakses Internet sehingga aplikasi yang dibuat dapat berinteraksi dengan Internet di Android.
+
+Alur data di flutter:
+Pertama, input dari flutter akan diproses oleh widget yang berkaitan. Lalu, Widget akan meminta data JSON dari server Django (melalui http.get). View django yang berkaitan akan memproses permintaan dan memberikan data JSON. Setelah menerima data JSON, model Dart yang berkaitan akan melakukan parsing dan membuat list objek model dart. Saat data sudah dibuat, data tersebut akan ditampilkan oleh Widget yang berkaitan.
+
+mekanisme register, login, logout flutter:
+Register: mengisi field akun untuk registrasi. Widget mengconvert input ke JSON dan mengirim data ke url view autentikasi register (melalui http.post). View melakukan validasi berdasarkan data. Jika aman view akan membuat user baru. View lalu memberikan respons. Flutter lalu menampilkan tampilan berdasarkan respons server.
+
+Login: mengisi field akun untuk login. Widget mengconvert input ke JSON dan mengirim data ke url view autentikasi login. View melakukan validasi login berdasarkan data. Jika berhasil login, server akan mengirimkan respons beserta cookie sessionid ke flutter. Flutter lalu menyimpan sessionid sebagai cookie dan melakukan navigasi ke menu yang sesuai.
+
+Logout: melakukan permintaan logout (biasanya melalui tombol logout). Flutter akan melakukan http.post ke url logout dan juga mengirim cookie sessionid. View Django akan memproses logout dan memberikan respons. Setelah respons diterima, app flutter menghapus cookie sessionid nya.
+
+Cara saya mengimplementasikan checklist:
+- Membuat app autentikasi (untuk autentikasi flutter) di projek Django.
+- Membuat view untuk melakukan registrasi, login, dan logout di app autentikasi flutter - dan melakukan routing url
+- Membuat widget untuk autentikasi di flutter (yang mengintegrasikan app autentikasi Django).
+- Mengubah homepage menjadi LoginPage().
+- Menambahkan view django untuk memberi JSON product user.
+- Membuat widget list product
+- Membuat view untuk add product dari aplikasi flutter
+- Melink widget form product ke django
+- Menambah tombol logout
+
+</details>
+----------------------------------------------------------------------------------------------------------------------------------
 <details>
 <summary>Tugas 6</summary>
 Perbedaan dari synchronus request dan asynchronus request adalah untuk synchronus request, setelah client memberikan request, client harus menunggu response dari server sebelum melakukan hal lainnya. Sementara untuk asynchronus request, client dapat melakukan hal lain tanpa perlu menunggu response dari server.
